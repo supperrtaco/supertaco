@@ -39,6 +39,14 @@
       width: 100%; background-color: #2ecc71; color: #0b1a12;
       border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer;
     }
+    .google-btn {
+      background-color: #4285F4 !important; 
+      color: #fff !important; 
+      text-decoration: none;
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -60,11 +68,19 @@
       <span class="star" onclick="rate(5)">⭐</span>
     </div>
 
+    <!-- Düşük puanlar için form -->
     <div class="feedback-box" id="feedbackForm">
       <p style="font-size: 13px; margin-bottom: 8px; color: #ff6b6b;">Deneyiminizin tam beklendiği gibi olmamasına üzüldük. Bize önerilerinizi yazın:</p>
       <textarea id="userComment" placeholder="Görüş ve önerilerinizi buraya yazabilirsiniz..."></textarea>
       <button onclick="sendFeedback()">Görüşü Gönder</button>
     </div>
+
+    <!-- Yüksek puanlar için Google Butonu -->
+    <div class="feedback-box" id="googleForm" style="text-align: center;">
+      <p style="font-size: 15px; margin-bottom: 15px; color: #b2dfdb;">Harika! Deneyiminizi Google'da paylaşarak bize destek olabilirsiniz.</p>
+      <button class="google-btn" onclick="window.location.href='https://search.google.com/local/writereview?placeid=ChIJ7dsfp8zHyhQRSl6u0-pKFoI'">Google'da Değerlendir</button>
+    </div>
+
   </div>
 
   <script>
@@ -72,19 +88,21 @@
     
     function rate(score) {
       selectedScore = score;
+      
+      // Yıldızları ve üstteki yazıyı gizle
+      document.getElementById('stars-block').style.display = 'none';
+      document.getElementById('instruction-text').style.display = 'none';
+      
+      // Puana göre hangi kutunun açılacağına karar ver
       if (score <= 3) {
-        document.getElementById('stars-block').style.display = 'none';
-        document.getElementById('instruction-text').style.display = 'none';
         document.getElementById('feedbackForm').style.display = 'block';
       } else {
-        // Yeni Google Haritalar doğrudan yorum bağlantısı eklendi
-        window.location.href = "https://search.google.com/local/writereview?placeid=ChIJ7dsfp8zHyhQRSl6u0-pKFoI";
+        document.getElementById('googleForm').style.display = 'block';
       }
     }
     
     function sendFeedback() {
       const comment = document.getElementById('userComment').value;
-      // Yeni e-posta adresi güncellendi
       window.location.href = "mailto:bulent.cospinar@superrtaco.com.tr?subject=Superr%20Taco%20Geri%20Bildirim%20(Puan:" + selectedScore + ")&body=" + encodeURIComponent(comment);
     }
   </script>
