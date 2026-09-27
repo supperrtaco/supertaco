@@ -29,15 +29,25 @@
     .stars-container { display: flex; justify-content: center; gap: 12px; cursor: pointer; margin-bottom: 20px; }
     .star { font-size: 38px; transition: transform 0.2s; user-select: none; }
     .star:hover { transform: scale(1.25); filter: drop-shadow(0 0 12px #2ecc71); }
-    .feedback-box { display: none; margin-top: 20px; text-align: left; }
+    
+    /* Geri bildirim ve Google değerlendirme kutuları için ortak ayarlar */
+    .feedback-box, .google-review-box { display: none; margin-top: 20px; text-align: left; }
+    
     .feedback-box textarea {
       width: 100%; height: 90px; background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(46, 204, 113, 0.4); border-radius: 12px;
       padding: 12px; color: #fff; font-size: 14px; margin-bottom: 10px; outline: none;
     }
-    .feedback-box button {
+    
+    /* Buton tasarımlarını eşitledik */
+    .feedback-box button, .google-review-box a {
+      display: block; text-align: center; text-decoration: none;
       width: 100%; background-color: #2ecc71; color: #0b1a12;
       border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer;
+    }
+    
+    .google-review-box p { 
+      text-align: center; color: #2ecc71; margin-bottom: 15px; font-size: 15px; 
     }
   </style>
 </head>
@@ -46,7 +56,6 @@
   <div class="rating-card">
     <div class="logo-container">
       <div class="logo-circle">
-        <!-- Bulduğunuz çalışan resim linki doğrudan buraya eklendi -->
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkMDQhe-dLoP9lt447m4y3ZOdDECk_sGCPv-8WG0Q3YK2krsRo5M0YEcEo&s=10" alt="Superr Taco Logo">
       </div>
     </div>
@@ -62,24 +71,37 @@
     </div>
 
     <div class="feedback-box" id="feedbackForm">
-      <p style="font-size: 13px; margin-bottom: 8px; color: #ff6b6b;">Deneyiminizin tam beklendiği gibi olmamasına üzüldük. Bize önerilerinizi yazın:</p>
+      <p style="font-size: 13px; margin-bottom: 8px; color: #ff6b6b; text-align: left;">Deneyiminizin tam beklendiği gibi olmamasına üzüldük. Bize önerilerinizi yazın:</p>
       <textarea id="userComment" placeholder="Görüş ve önerilerinizi buraya yazabilirsiniz..."></textarea>
       <button onclick="sendFeedback()">Görüşü Gönder</button>
+    </div>
+
+    <!-- Yüksek puan verenler için yeni eklenen kutu -->
+    <div class="google-review-box" id="googleReviewBox">
+      <p>Desteğiniz için teşekkürler! Bizi Google'da değerlendirerek mutlu edebilirsiniz.</p>
+      <a href="https://share.google/MH2bopcRsVNE7IFix" target="_blank">Google'da Değerlendir</a>
     </div>
   </div>
 
   <script>
     let selectedScore = 0;
+    
     function rate(score) {
       selectedScore = score;
+      
+      // Her durumda yıldızları ve üstteki yazıyı gizle
+      document.getElementById('stars-block').style.display = 'none';
+      document.getElementById('instruction-text').style.display = 'none';
+      
       if (score <= 3) {
-        document.getElementById('stars-block').style.display = 'none';
-        document.getElementById('instruction-text').style.display = 'none';
+        // Düşük puanlar için e-posta geri bildirim formunu göster
         document.getElementById('feedbackForm').style.display = 'block';
       } else {
-        window.location.href = "https://share.google/MH2bopcRsVNE7IFix";
+        // Yüksek puanlar için otomatik yönlendirme YERİNE butonlu kutuyu göster (Phishing koruması)
+        document.getElementById('googleReviewBox').style.display = 'block';
       }
     }
+    
     function sendFeedback() {
       const comment = document.getElementById('userComment').value;
       window.location.href = "mailto:bulent.cospinar@superrtaco.com.tr?subject=Superr%20Taco%20Geri%20Bildirim%20(Puan:" + selectedScore + ")&body=" + encodeURIComponent(comment);
