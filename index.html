@@ -103,9 +103,11 @@
     
     function sendFeedback() {
       const comment = document.getElementById('userComment').value;
-      // Geri bildirim iki adrese birden gider
-      const recipients = "bulent.cospinar@superrtaco.com.tr,Erkan.sahinturk@yahoo.com";
-      window.location.href = "mailto:" + recipients + "?subject=Superr%20Taco%20Geri%20Bildirim%20(Puan:" + selectedScore + ")&body=" + encodeURIComponent(comment);
+      // Geri bildirim iki adrese birden gider (ikinci adres CC olarak; mobil mail uygulamalarında daha güvenilir)
+      window.location.href = "mailto:bulent.cospinar@superrtaco.com.tr"
+        + "?cc=" + encodeURIComponent("Erkan.sahinturk@yahoo.com")
+        + "&subject=" + encodeURIComponent("Superr Taco Geri Bildirim (Puan: " + selectedScore + ")")
+        + "&body=" + encodeURIComponent(comment);
     }
   </script>
 
